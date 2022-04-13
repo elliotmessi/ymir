@@ -40,7 +40,7 @@ const ProjectDatasetSelect = ({ pid, value, projects = [], onChange = () => { },
     if (result) {
       target.children = result.map(dataset => {
         return {
-          label: dataset.name + dataset.versionName,
+          label: `${dataset.name} ${dataset.versionName}`,
           value: dataset.id,
           isLeaf: true,
         }
@@ -50,7 +50,7 @@ const ProjectDatasetSelect = ({ pid, value, projects = [], onChange = () => { },
   }
 
   return (
-    <Cascader value={value} options={options} {...resProps} loadData={loadData} onChange={onChange} changeOnSelect allowClear></Cascader>
+    <Cascader value={value} options={options} {...resProps} loadData={loadData} onChange={onChange} allowClear></Cascader>
   )
 }
 
@@ -67,10 +67,10 @@ const actions = (dispatch) => {
         payload: { limit: 10000 },
       })
     },
-    getDatasets(pid) {
+    getDatasets(pid, force) {
       return dispatch({
         type: 'dataset/queryAllDatasets',
-        payload: pid,
+        payload: { pid, force },
       })
     }
   }

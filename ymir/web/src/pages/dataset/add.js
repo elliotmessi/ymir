@@ -110,10 +110,13 @@ const Add = (props) => {
         return message.error(t('keyword.add.failure'))
       }
     }
-    var params = {
+    let params = {
       ...values,
       strategy,
       projectId: pid,
+    }
+    if (currentType === TYPES.COPY) {
+      params.datasetId = params.datasetId[1]
     }
     if (currentType === TYPES.LOCAL) {
       if (fileToken) {
@@ -263,7 +266,7 @@ const Add = (props) => {
               </>
             ) : null}
             {isType(TYPES.COPY) ? (
-              <Tip content={t('tip.task.filter.datasets')}>
+              <Tip hidden={true}>
                 <Form.Item
                   label={t('dataset.add.form.copy.label')}
                   name='datasetId'
@@ -271,11 +274,7 @@ const Add = (props) => {
                     { required: true, message: t('dataset.add.form.copy.required') }
                   ]}
                 >
-                  <ProjectDatasetSelect placeholder={t('dataset.add.form.copy.placeholder')}>
-                    {filterDataset().map(dataset => (
-                      <Option value={dataset.id} key={dataset.id}>{dataset.name} (Total: {dataset.assetCount})</Option>
-                    ))}
-                  </ProjectDatasetSelect>
+                  <ProjectDatasetSelect pid={pid} placeholder={t('dataset.add.form.copy.placeholder')}></ProjectDatasetSelect>
                 </Form.Item>
               </Tip>
             ) : null}
