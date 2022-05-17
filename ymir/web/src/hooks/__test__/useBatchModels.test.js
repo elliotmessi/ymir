@@ -1,6 +1,6 @@
 import { useEffect } from "react"
 import useBatchModels from "../useBatchModels"
-import { renderHook } from '@testing-library/react-hooks'
+import { renderHook, act } from '@testing-library/react-hooks'
 
 jest.mock('umi', () => ({
   useDispatch() {
@@ -8,15 +8,16 @@ jest.mock('umi', () => ({
   }
 }))
 
+const batchModels = renderHook(() => useBatchModels())
+
 describe('hooks: useBatchModels', () => {
-  it('test normal progress.', () => {
+  it('test normal progress.', async () => {
     const ids = [1,3,4,6]
-    const [models, getModels] = useBatchModels()
-    getModels(ids)
-    useEffect(() => {
-      if (models.length) {
-        expect(models).toEqual(ids)
-      }
-    }, [models])
+    const { result: { current: [models, getModels] } } = batchModels()
+
+    act(() => {
+      getModels(ids)
+    })
+    expect(models).toEqual()
   })
 })
