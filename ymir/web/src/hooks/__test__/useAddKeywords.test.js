@@ -1,21 +1,27 @@
 import { renderHook, act } from '@testing-library/react-hooks'
+import umi from 'umi'
 import useAddKeywords from "../useAddKeywords"
+
+const mockResult = { failed: ['person'] }
+const mockDispatch = jest.fn()
 
 jest.mock('umi', () => ({
   useDispatch() {
-    return jest.fn(({ payload }) => ({ failed: ['person'] }))
+    return mockDispatch
   }
 }))
 
 
-const { result, rerender } = renderHook((dry_run) => useAddKeywords(dry_run))
 describe('hooks: useAddKeywords', () => {
   const keywords = ['cat', 'dog', 'person']
-  it('dry_run = false', async () => {
+  const normalTest = dry_run => it(`dry_run = ${dry_run}`, async () => {
+    const { result } = renderHook(() => useAddKeywords(dry_run))
+    mockDispatch.mockImplementationOnce(() => mockResult)
 
     const [_, add] = result.current
-    const {repeated, newer} = result.current[0]
+    const { repeated, newer } = result.current[0]
 
+    // initial
     expect(repeated).toEqual([])
     expect(newer).toEqual([])
 
@@ -23,18 +29,26 @@ describe('hooks: useAddKeywords', () => {
       add(keywords)
     })
     const { repeated: newRepeated, newer: newNewer } = result.current[0]
-    
+    expect(mockDispatch).toHaveBeenCalled()
+    expect(newRepeated).toEqual(mockResult.failed)
+    expect(newNewer).toEqual(['cat', 'dog'])
   })
+  normalTest()
+  normalTest(false)
+  normalTest(true)
 
-  it('dry_run = true', async () => {
+  it('keyword length === 0', async () => {
+    const { result } = renderHook((dry_run) => useAddKeywords(dry_run))
+    mockDispatch = jest.fn()
 
-    rerender(true)
-
-    expect(result.current[0]).toEqual([])
+    const [_, add] = result.current
 
     await act(async () => {
-      result.current[1](ids)
+      add([])
     })
-    expect(result.current[0]).toEqual(ids)
+    const { repeated, newer } = result.current[0]
+    expect(mockDispatch).toHaveBeenCalled(3)
+    expect(repeated).toEqual([])
+    expect(newer).toEqual([])
   })
 })
