@@ -29,7 +29,7 @@ describe('hooks: useAddKeywords', () => {
       add(keywords)
     })
     const { repeated: newRepeated, newer: newNewer } = result.current[0]
-    expect(mockDispatch).toHaveBeenCalled()
+  
     expect(newRepeated).toEqual(mockResult.failed)
     expect(newNewer).toEqual(['cat', 'dog'])
   })
@@ -39,7 +39,6 @@ describe('hooks: useAddKeywords', () => {
 
   it('keyword length === 0', async () => {
     const { result } = renderHook((dry_run) => useAddKeywords(dry_run))
-    mockDispatch = jest.fn()
 
     const [_, add] = result.current
 
@@ -47,7 +46,7 @@ describe('hooks: useAddKeywords', () => {
       add([])
     })
     const { repeated, newer } = result.current[0]
-    expect(mockDispatch).toHaveBeenCalled(3)
+    expect(mockDispatch).toHaveBeenCalledTimes(3)
     expect(repeated).toEqual([])
     expect(newer).toEqual([])
   })

@@ -1,23 +1,35 @@
 import { renderHook, act } from '@testing-library/react-hooks'
 import useBatchModels from "../useBatchModels"
-
+const mockDispatch = jest.fn(({ payload }) => payload)
 jest.mock('umi', () => ({
   useDispatch() {
-    return jest.fn(({ payload }) => payload)
+    return mockDispatch
   }
 }))
 
-const { result } = renderHook(() => useBatchModels())
 
 describe('hooks: useBatchModels', () => {
   it('test normal progress.', async () => {
-    const ids = [1,3,4,6]
+    const { result } = renderHook(() => useBatchModels())
+    const ids = [1, 3, 4, 6]
 
-    expect(result.current[0]).toEqual([])
+    const [initModel, getModels] = result.current
+
+    expect(initModel).toEqual([])
 
     await act(async () => {
-      result.current[1](ids)
+      getModels(ids)
     })
     expect(result.current[0]).toEqual(ids)
+  })
+  it('test ids length === 0', async () => {
+    const { result } = renderHook(() => useBatchModels())
+    const [_, getModels] = result.current
+    await act(async () => {
+      getModels([])
+    })
+    expect(mockDispatch).toHaveBeenCalled()
+
+    expect(result.current[0]).toEqual([])
   })
 })
