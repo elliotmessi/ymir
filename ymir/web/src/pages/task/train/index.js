@@ -6,7 +6,6 @@ import { useHistory, useParams, useLocation } from "umi"
 
 import t from "@/utils/t"
 import { string2Array, generateName } from '@/utils/string'
-import { OPENPAI_MAX_GPU_COUNT } from '@/constants/common'
 import { TYPES } from '@/constants/image'
 import { randomNumber } from "@/utils/number"
 import useFetch from '@/hooks/useFetch'
@@ -25,7 +24,6 @@ import Desc from "@/components/form/desc"
 
 import styles from "./index.less"
 import commonStyles from "../common.less"
-import OpenpaiForm from "../components/openpaiForm"
 
 const TrainType = [{ value: "detection", label: 'task.train.form.traintypes.detect', checked: true }]
 
@@ -55,13 +53,11 @@ function Train({ allDatasets, datasetCache, ...func }) {
   const [gpu_count, setGPU] = useState(0)
   const [projectDirty, setProjectDirty] = useState(false)
   const [live, setLiveCode] = useState(false)
-  const [openpai, setOpenpai] = useState(false)
   const [duplicationChecked, setDuplicationChecked] = useState(false)
   const [strategy, setStrategy] = useState(0)
   const [allDuplicated, setAllDulplicated] = useState(false)
   const [duplicated, checkDuplication] = useFetch('dataset/checkDuplication', 0)
   const [sys, getSysInfo] = useFetch('common/getSysInfo', {})
-  const selectOpenpai = Form.useWatch('openpai', form)
 
   const renderRadio = (types) => <Radio.Group options={types.map(type => ({ ...type, label: t(type.label) }))} />
 
@@ -70,14 +66,7 @@ function Train({ allDatasets, datasetCache, ...func }) {
     fetchProject()
   }, [])
 
-  useEffect(() => {
-    setGPU(sys.gpu_count)
-    setOpenpai(!!sys.openpai_enabled)
-  }, [sys])
-
-  useEffect(() => {
-    setGPU(selectOpenpai ? OPENPAI_MAX_GPU_COUNT : sys.gpu_count || 0)
-  }, [selectOpenpai])
+  useEffect(() => setGPU(sys.gpu_count), [sys])
 
   useEffect(() => {
     const dss = allDatasets
@@ -273,7 +262,6 @@ function Train({ allDatasets, datasetCache, ...func }) {
             ]} tooltip={t('tip.task.train.image')}>
               <ImageSelect placeholder={t('task.train.form.image.placeholder')} onChange={imageChange} />
             </Form.Item>
-            <OpenpaiForm form={form} openpai={openpai} />
             <Form.Item
               label={t('task.train.form.trainsets.label')}
               required

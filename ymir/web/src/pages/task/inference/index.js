@@ -6,7 +6,6 @@ import { useHistory, useParams, useLocation } from "umi"
 import { formLayout } from "@/config/antd"
 import t from "@/utils/t"
 import { string2Array } from "@/utils/string"
-import { OPENPAI_MAX_GPU_COUNT } from '@/constants/common'
 import { TYPES } from '@/constants/image'
 import useFetch from '@/hooks/useFetch'
 
@@ -24,7 +23,6 @@ import Desc from "@/components/form/desc"
 
 import commonStyles from "../common.less"
 import styles from "./index.less"
-import OpenpaiForm from "../components/openpaiForm"
 import Tip from "@/components/form/tip"
 
 const { Option } = Select
@@ -56,22 +54,11 @@ function Inference({ datasetCache, datasets, ...func }) {
   const [project, getProject] = useFetch('project/getProject', {})
   const watchStages = Form.useWatch('stages', form)
   const watchTestingSets = Form.useWatch('datasets', form)
-  const [openpai, setOpenpai] = useState(false)
   const [sys, getSysInfo] = useFetch('common/getSysInfo', {})
-  const selectOpenpai = Form.useWatch('openpai', form)
 
-  useEffect(() => {
-    getSysInfo()
-  }, [])
+  useEffect(() => getSysInfo(), [])
 
-  useEffect(() => {
-    setGPU(sys.gpu_count || 0)
-    setOpenpai(!!sys.openpai_enabled)
-  }, [sys])
-
-  useEffect(() => {
-    setGPU(selectOpenpai ? OPENPAI_MAX_GPU_COUNT : sys.gpu_count || 0)
-  }, [selectOpenpai])
+  useEffect(() => setGPU(sys.gpu_count || 0), [sys])
 
   useEffect(() => {
     pid && getProject({ id: pid, force: true })
@@ -270,7 +257,6 @@ function Inference({ datasetCache, datasets, ...func }) {
                 onChange={imageChange}
               />
             </Form.Item>
-            <OpenpaiForm form={form} openpai={openpai} />
             <Form.Item
               tooltip={t('tip.task.filter.igpucount')}
               label={t('task.gpu.count')}

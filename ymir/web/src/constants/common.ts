@@ -14,8 +14,6 @@ export enum actions {
   del = 'delete',
 }
 
-export const OPENPAI_MAX_GPU_COUNT  = 8
-
 type Result = {
   [key: string]: any,
 }
