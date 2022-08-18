@@ -12,7 +12,6 @@ export interface Image {
   functions:Array<number>,
   configs: Array<InferConfig>,
   url: string,
-  liveCode?: boolean,
   description: string,
   createTime: string,
   related?: Array<Image>,

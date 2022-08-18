@@ -157,10 +157,6 @@ const ImageList = ({ role, filter, getImages }) => {
     return <span className={s.stateIcon}>{states[state]}</span>
   }
 
-  const liveCodeState = (live) => {
-    return <span className={live ? s.remote : s.local}>{t(live ? 'image.livecode.label.remote' : 'image.livecode.label.local')}</span>
-  }
-
   const addBtn = (
     <div className={s.addBtn} onClick={() => history.push('/home/image/add')}><AddIcon />{t('image.new.label')}</div>
   )
@@ -170,8 +166,7 @@ const ImageList = ({ role, filter, getImages }) => {
       <Col flex={1}><Space>
         <span>{item.name}</span>
         {imageState(item.state)}
-        {isDone(item.state) ? liveCodeState(item.liveCode) : null}
-        </Space></Col>
+      </Space></Col>
       <Col>{more(item)}</Col>
     </Row>
     const type = isTrain(item.functions) ? 'train' : 'mining'

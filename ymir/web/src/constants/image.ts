@@ -55,7 +55,6 @@ export function transferImage(data: BackendData): Image {
     functions: (data.configs || []).map((config: InferConfig) => config.type),
     configs: data.configs || [],
     url: data.url,
-    liveCode: data.enable_livecode,
     isShared: data.is_shared,
     related: data.related,
     description: data.description,

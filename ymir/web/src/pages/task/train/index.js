@@ -15,10 +15,7 @@ import ImageSelect from "@/components/form/imageSelect"
 import ModelSelect from "@/components/form/modelSelect"
 import KeywordRates from "@/components/dataset/keywordRates"
 import CheckProjectDirty from "@/components/common/CheckProjectDirty"
-import LiveCodeForm from "../components/liveCodeForm"
-import { removeLiveCodeConfig } from "../components/liveCodeConfig"
 import DockerConfigForm from "../components/dockerConfigForm"
-import TrainFormat from "../components/trainFormat"
 import DatasetSelect from "@/components/form/datasetSelect"
 import Desc from "@/components/form/desc"
 
@@ -52,7 +49,6 @@ function Train({ allDatasets, datasetCache, ...func }) {
   const [seniorConfig, setSeniorConfig] = useState([])
   const [gpu_count, setGPU] = useState(0)
   const [projectDirty, setProjectDirty] = useState(false)
-  const [live, setLiveCode] = useState(false)
   const [duplicationChecked, setDuplicationChecked] = useState(false)
   const [strategy, setStrategy] = useState(0)
   const [allDuplicated, setAllDulplicated] = useState(false)
@@ -138,8 +134,7 @@ function Train({ allDatasets, datasetCache, ...func }) {
   function imageChange(_, image = {}) {
     const { configs } = image
     const configObj = (configs || []).find(conf => conf.type === TYPES.TRAINING) || {}
-    setLiveCode(image.liveCode || false)
-    setConfig(removeLiveCodeConfig(configObj.config))
+    setConfig(configObj.config)
   }
 
   function setConfig(config = {}) {
@@ -155,7 +150,6 @@ function Train({ allDatasets, datasetCache, ...func }) {
         {}),
       ...(values.live || {}),
     }
-    values.trainFormat && (config['export_format'] = values.trainFormat)
 
     const gpuCount = form.getFieldValue('gpu_count')
 
@@ -341,10 +335,6 @@ function Train({ allDatasets, datasetCache, ...func }) {
               </Form.Item>
               <span style={{ marginLeft: 20 }}>{t('task.gpu.tip', { count: gpu_count })}</span>
             </Form.Item>
-            <Form.Item hidden={!live} label={t('task.train.export.format')} tooltip={t('tip.train.export.format')} name='trainFormat' initialValue={'ark:raw'}>
-              <TrainFormat />
-            </Form.Item>
-            <LiveCodeForm form={form} live={live} />
             <DockerConfigForm seniorConfig={seniorConfig} form={form} />
             <Desc form={form} />
             <Form.Item wrapperCol={{ offset: 8 }}>

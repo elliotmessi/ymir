@@ -17,7 +17,6 @@ import { format } from "@/utils/date"
 import { getTensorboardLink } from "@/services/common"
 import { TASKTYPES } from "@/constants/task"
 import s from "./detail.less"
-import renderLiveCodeItem from '@/components/task/items/livecode'
 
 const { Item } = Descriptions
 
@@ -179,7 +178,6 @@ function TaskDetail({ task = {}, batchDatasets, getModel }) {
       </Item>
       {renderModel(task.parameters.model_id, task.project_id, model, 'task.detail.label.premodel')}
       {renderDuration(task.durationLabel)}
-      {renderLiveCodeItem(task.config)}
       {renderTrainImage(task?.parameters?.docker_image, 2)}
       <Item label={t("task.detail.label.processing")} span={2}>
         <Link target="_blank" to={getTensorboardLink(task.hash)}>
@@ -209,7 +207,6 @@ function TaskDetail({ task = {}, batchDatasets, getModel }) {
       <Item label={t("task.detail.label.mining.image")} span={2}>
         {task.parameters.docker_image}
       </Item>
-      {renderLiveCodeItem(task.config)}
       {renderConfig(task.config)}
     </>
   )
@@ -250,7 +247,6 @@ function TaskDetail({ task = {}, batchDatasets, getModel }) {
     <Item label={t("dataset.column.source")}>{t('task.type.modelcopy')}</Item>
     {renderCreateTime(task.create_datetime)}
     {renderModel(task.parameters.model_id, task.project_id, model, 'task.detail.label.premodel')}
-    {renderLiveCodeItem(task.config)}
     {renderTrainImage(task?.parameters?.docker_image, 2)}
     {renderPreProcess(task.parameters?.preprocess)}
     {renderConfig(task.config)}
@@ -285,7 +281,6 @@ function TaskDetail({ task = {}, batchDatasets, getModel }) {
       <Item label={t("task.inference.form.image.label")}>
         {task.parameters.docker_image}
       </Item>
-      {renderLiveCodeItem(task.config)}
       {renderConfig(task.config)}
     </>
   )

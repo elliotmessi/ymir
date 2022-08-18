@@ -87,7 +87,6 @@ describe("constants: image", () => {
       createTime: format(createTime),
       description: "test",
       functions, 
-      liveCode: undefined,
       id: 1,
       isShared: false,
       name: "sample_image",

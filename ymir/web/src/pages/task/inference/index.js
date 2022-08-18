@@ -16,8 +16,6 @@ import ImageSelect from "@/components/form/imageSelect"
 import DatasetSelect from "@/components/form/datasetSelect"
 import useAddKeywords from "@/hooks/useAddKeywords"
 import AddKeywordsBtn from "@/components/keyword/addKeywordsBtn"
-import LiveCodeForm from "../components/liveCodeForm"
-import { removeLiveCodeConfig } from "../components/liveCodeConfig"
 import DockerConfigForm from "../components/dockerConfigForm"
 import Desc from "@/components/form/desc"
 
@@ -50,7 +48,6 @@ function Inference({ datasetCache, datasets, ...func }) {
   const [selectedGpu, setSelectedGpu] = useState(0)
   const [keywordRepeatTip, setKRTip] = useState('')
   const [{ newer }, checkKeywords] = useAddKeywords(true)
-  const [live, setLiveCode] = useState(false)
   const [project, getProject] = useFetch('project/getProject', {})
   const watchStages = Form.useWatch('stages', form)
   const watchTestingSets = Form.useWatch('datasets', form)
@@ -116,8 +113,7 @@ function Inference({ datasetCache, datasets, ...func }) {
   function imageChange(_, image = {}) {
     const { url, configs = [] } = image
     const configObj = configs.find(conf => conf.type === TYPES.INFERENCE) || {}
-    setLiveCode(image.liveCode || false)
-    setConfig(removeLiveCodeConfig(configObj.config))
+    setConfig(configObj.config)
   }
 
   function setConfig(config) {
@@ -272,7 +268,6 @@ function Inference({ datasetCache, datasets, ...func }) {
               </span>
             </Form.Item>
 
-            <LiveCodeForm form={form} live={live} />
             <DockerConfigForm form={form} seniorConfig={seniorConfig} />
 
             <Desc form={form} />

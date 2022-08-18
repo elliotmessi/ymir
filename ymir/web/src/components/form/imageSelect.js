@@ -32,10 +32,7 @@ const ImageSelect = ({ value, relatedId, type = TYPES.TRAINING, onChange = () =>
   }
 
   const generateOption = image => ({
-    label: <Row>
-      <Col flex={1}>{image.name}</Col>
-      <Col style={{ color: 'rgba(0, 0, 0, 0.45)'}}>{t(`image.livecode.label.${image.liveCode ? 'remote' : 'local'}`)}</Col>
-    </Row>,
+    label: image.name,
     image,
     value: image.id + ',' + image.url,
   })

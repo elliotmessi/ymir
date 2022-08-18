@@ -12,11 +12,8 @@ import { randomNumber } from "@/utils/number"
 import useFetch from '@/hooks/useFetch'
 
 import Breadcrumbs from "@/components/common/breadcrumb"
-import EmptyStateModel from '@/components/empty/model'
 import ModelSelect from "@/components/form/modelSelect"
 import ImageSelect from "@/components/form/imageSelect"
-import LiveCodeForm from "../components/liveCodeForm"
-import { removeLiveCodeConfig } from "../components/liveCodeConfig"
 import DockerConfigForm from "../components/dockerConfigForm"
 import DatasetSelect from "@/components/form/datasetSelect"
 import Desc from "@/components/form/desc"
@@ -39,7 +36,6 @@ function Mining({ datasetCache, ...func }) {
   const [topk, setTopk] = useState(true)
   const [gpu_count, setGPU] = useState(0)
   const [imageHasInference, setImageHasInference] = useState(false)
-  const [live, setLiveCode] = useState(false)
   const [sys, getSysInfo] = useFetch('common/getSysInfo', {})
 
   useEffect(() => getSysInfo(), [])
@@ -67,8 +63,7 @@ function Mining({ datasetCache, ...func }) {
     const hasInference = configs.some(conf => conf.type === TYPES.INFERENCE)
     setImageHasInference(hasInference)
     !hasInference && form.setFieldsValue({ inference: false })
-    setLiveCode(image.liveCode || false)
-    setConfig(removeLiveCodeConfig(configObj.config))
+    setConfig(configObj.config)
   }
 
   function setConfig(config) {
@@ -208,7 +203,6 @@ function Mining({ datasetCache, ...func }) {
               <span style={{ marginLeft: 20 }}>{t('task.gpu.tip', { count: gpu_count })}</span>
             </Form.Item>
 
-            <LiveCodeForm form={form} live={live} />
             <DockerConfigForm form={form} seniorConfig={seniorConfig} />
             <Desc form={form} />
             <Form.Item wrapperCol={{ offset: 8 }}>
