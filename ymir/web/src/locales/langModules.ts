@@ -14,7 +14,6 @@ import user from './modules/user'
 import image from './modules/image'
 import tip from './modules/tip'
 import project from './modules/project'
-import visualization from './modules/visualization'
 
 export default {
   ...common,
@@ -32,5 +31,4 @@ export default {
   ...image,
   ...tip,
   ...project,
-  ...visualization,
 }
