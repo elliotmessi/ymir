@@ -3,8 +3,8 @@
 
 import { BackendData } from "@/interface/common"
 export const HIDDENMODULES = {
-  OPENPAI: true,
-  LIVECODE: true,
+  OPENPAI: false,
+  LIVECODE: false,
 }
 
 
