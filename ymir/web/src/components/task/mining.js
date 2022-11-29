@@ -254,7 +254,7 @@ function Mining({ query = {}, hidden, ok = () => {}, datasetCache, bottom, ...fu
                 },
               ]}
             >
-              <InputNumber min={0} max={gpu_count} precision={0} />
+              <InputNumber min={0} max={1} precision={0} />
             </Form.Item>
             <span style={{ marginLeft: 20 }}>{t('task.gpu.tip', { count: gpu_count })}</span>
           </Form.Item>

@@ -311,7 +311,7 @@ function Inference({...func }) {
                   },
                 ]}
               >
-                <InputNumber min={0} max={Math.floor(gpu_count / taskCount)} precision={0} onChange={setSelectedGpu} />
+                <InputNumber min={0} max={0} precision={0} onChange={setSelectedGpu} />
               </Form.Item>
               <span style={{ marginLeft: 20 }}>{t('task.infer.gpu.tip', { total: gpu_count, selected: taskCount * selectedGpu })}</span>
             </Form.Item>
