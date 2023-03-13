@@ -110,7 +110,6 @@ function HeaderNav({ simple = false }) {
 
   return (
     <Row className={styles.nav} gutter={24} align="middle">
-      <div className={styles.logo} style={{ overflow: simple ? 'initial' : 'hidden' }}><Link to='/' title={'YMIR'}><img src={logo} /></Link></div>
       {!simple ? <>
         <Col flex={1}>
           <Menu className='nav-menu' selectedKeys={defaultKeys} onClick={handleClick} mode="horizontal" items={mainMenu} />
