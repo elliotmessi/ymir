@@ -38,7 +38,6 @@ const Login = ({ loginApi }) => {
     <div className={styles.login}>
       <Row>
         <Col span={16} className={`${styles.slogan} slogan_${getLocale()}`}>
-          <div className={styles.logo}><img src={loginBig} /></div>
           <div className={styles.footer}>
             <Foot></Foot>
           </div>

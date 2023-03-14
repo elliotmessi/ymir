@@ -82,7 +82,6 @@ function HeaderNav({ simple = false }) {
   }
   const topMenuItems = [
     { key: 'user', label: <div onClick={() => history.push('/home/user')}><UserIcon /> {t('common.top.menu.user')}</div>, },
-    { key: 'github', label: <a target="_blank" href='https://github.com/IndustryEssentials/ymir'><GithubIcon /> {t('common.top.menu.community')}</a>, },
     { key: 'logout', label: <div onClick={out}><LogoutOutlined /> {t('common.top.menu.logout')}</div>, },
   ]
 
@@ -119,7 +118,7 @@ function HeaderNav({ simple = false }) {
           <Space size={20}>
             <Dropdown overlay={menu} placement="bottomRight">
               <div className={styles.user} title={name}>
-                <span className={styles.avatar}>{avatar ? <img src={avatar} /> : (username || 'Y').charAt(0).toUpperCase()}</span>
+                <span className={styles.avatar}>{avatar ? <img src={avatar} /> : (username || 'U').charAt(0).toUpperCase()}</span>
                 <span className={styles.username}>{name}</span>
                 <ArrowDownIcon />
               </div>

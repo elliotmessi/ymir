@@ -100,21 +100,7 @@ function LeftMenu() {
         : null,
       { type: 'divider' },
       isSuperAdmin(role) ? getItem(t('common.top.menu.permission'), '/home/permission', UserSettingsIcon) : null,
-      getItem(
-        <a target="_blank" href="/docs/#/README.md">
-          <BookIcon />
-          <span style={{ display: 'inline-block', marginLeft: 10 }}>{t('common.menu.docs')}</span>
-        </a>,
-        'outer/docs',
-      ),
       getItem(t('user.settings'), '/home/user', UserIcon),
-      getItem(
-        <a target="_blank" href="https://github.com/IndustryEssentials/ymir">
-          <GithubIcon />
-          <span style={{ display: 'inline-block', marginLeft: 10 }}>{t('common.top.menu.community')}</span>
-        </a>,
-        'outer/github',
-      ),
     ])
   }, [id, project, role])
 
