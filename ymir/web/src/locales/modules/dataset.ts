@@ -92,9 +92,9 @@ const dataset = {
     en: 'image -> images; gt -> GT annotations; pred -> predictions. gt and pred is optional. structure: {br}{pic}',
   },
   'dataset.add.form.path.tip': {
-    cn: `1. 将数据文件夹存放到ymir工作空间目录下的ymir-sharing目录，如 /home/ymir/ymir-workspace/ymir-sharing/Dataset2012, 输入基于ymir-sharing相对路径：Dataset2012{br}
+    cn: `1. 将数据文件夹存放到工作空间目录下的vb-sharing目录，如 /home/vb/vb-workspace/vb-sharing/Dataset2012, 输入基于vb-sharing相对路径：Dataset2012{br}
     2. {structure}`,
-    en: `1. Save the data in 'ymir-sharing' under ymir workspace directory, such as /home/ymir/ymir-workspace/ymir-sharing/Dataset2012, and input relative path base on ymir-sharing: Dataset2012{br}
+    en: `1. Save the data in 'vb-sharing' under vb workspace directory, such as /home/vb/vb-workspace/vb-sharing/Dataset2012, and input relative path base on vb-sharing: Dataset2012{br}
     2. {structure}`,
   },
   'dataset.add.form.path.placeholder': { cn: '请输入路径', en: 'Please input path on server' },

@@ -1,4 +1,4 @@
-const SysName = "YMIR"
+const SysName = "VesionBook"
 type ItemType = {cn: string, en: string}
 const generateItem = ({ cn, en }: ItemType) => {
   const prefix = (title: string) => `${SysName} - ${title}`
