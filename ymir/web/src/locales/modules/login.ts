@@ -7,7 +7,7 @@ const login = {
   "login.pwd.required.msg": { cn: "请输入密码", en: "Please input your password", },
   "login.forget": { cn: "忘记密码？", en: "Forget Password?", },
   "login.login.success": { cn: "登录成功", en: "Login Success!", },
-  "login.form.title": { cn: "欢迎登录", en: "Welcome to VesionBook", },
+  "login.form.title": { cn: "欢迎登录", en: "Welcome", },
   "login.email.placeholder": { cn: "请输入邮箱", en: "Please input your email", },
   "login.pwd.placeholder": { cn: "请输入密码", en: "Please input your password", },
 }

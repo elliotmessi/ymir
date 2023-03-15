@@ -2,7 +2,7 @@ import config from '@/../package.json'
 
 const Footer = () => (
   <footer style={{ textAlign: 'center' }}>
-    &copy;copyright VesionBook@Team 2022 version: {config.version}
+    &copy;copyright @Team 2023 version: {config.version}
   </footer>
 )
 
