@@ -1,13 +1,28 @@
-import { Col, Row, Select } from 'antd'
-import { useEffect, useState } from 'react'
+import { Col, Row, Select, SelectProps } from 'antd'
+import { FC, useEffect, useState } from 'react'
 
 import t from '@/utils/t'
 import useFetch from '@/hooks/useFetch'
+import { DefaultOptionType } from 'antd/lib/select'
+import useRequest from '@/hooks/useRequest'
 
+type KeywordType = {
+  name: string
+  aliases?: string
+}
+type OptionType = {
+  label: string
+aliases?: string[]
+value: string
+}
+type Props = SelectProps & {
+  keywords?: string[]
+  filter?: (kws: string[]) => string[]
+}
 
-const KeywordSelect = ({ value, onChange = () => { }, keywords, filter, ...resProps }) => {
-  const [options, setOptions] = useState([])
-  const [keywordResult, getKeywords] = useFetch('keyword/getKeywords')
+const KeywordSelect: FC<Props> = ({ value, onChange = () => { }, keywords, filter = x => x, ...resProps }) => {
+  const [options, setOptions] = useState<OptionType[]>([])
+  const { data: keywordResult, run: getKeywords} = useRequest<string[], [{ limit?: number }]>('keyword/getKeywords')
 
   useEffect(() => {
     if (keywords) {
@@ -37,8 +52,7 @@ const KeywordSelect = ({ value, onChange = () => { }, keywords, filter, ...resPr
     }
   }, [keywordResult])
 
-  function generateOptions(keywords = []) {
-    filter = filter || (x => x)
+  function generateOptions(keywords: string[] = []) {
     const opts = filter(keywords).map(keyword => ({
       label: <Row><Col flex={1}>{keyword.name}</Col></Row>,
       aliases: keyword.aliases,
