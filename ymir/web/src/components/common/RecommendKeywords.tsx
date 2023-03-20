@@ -11,18 +11,18 @@ type Props = {
   onSelect?: (keyword: string) => void
 }
 
-const RecommendKeywords: FC<Props> = ({ global = false, sets = [], limit = 5, onSelect = () => {} }) => {
+const RecommendKeywords: FC<Props> = ({ global = false, sets, limit = 5, onSelect = () => {} }) => {
   const { data: keywords = [], run: getKeywords } = useRequest<string[], [{ global?: boolean; dataset_ids: number[]; limit?: number }]>(
     'keyword/getRecommendKeywords',
   )
 
   useEffect(() => {
     if (global || sets) {
-      fetchKeywords()
+      fetchKeywords(sets)
     }
   }, [sets])
 
-  function fetchKeywords() {
+  function fetchKeywords(sets: number | number[] = []) {
     const ids = Array.isArray(sets) ? sets : [sets]
     getKeywords({ global, dataset_ids: ids, limit })
   }
