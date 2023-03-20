@@ -72,7 +72,7 @@ declare namespace YStates {
     models: List<YModels.Model>
     versions: IdMap<YModels.Model[]>
     model: IdMap<YModels.Model>
-    allModels: YModels.Model
+    allModels: YModels.Model[]
   }
 
   interface IterationState extends State {
