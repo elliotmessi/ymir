@@ -21,6 +21,9 @@ import EditNameBox from '@/components/form/editNameBox'
 import EditDescBox from '@/components/form/editDescBox'
 import { getTensorboardLink } from '@/constants/common'
 import Detail from '@/components/project/Detail'
+import EditStageCell from './StageCellEdit'
+import { DescPop } from '../common/DescPop'
+import useRerunAction from '@/hooks/useRerunAction'
 
 import {
   ShieldIcon,
@@ -37,9 +40,6 @@ import {
   ImportIcon,
   BarchartIcon,
 } from '@/components/common/Icons'
-import EditStageCell from './editStageCell'
-import { DescPop } from '../common/DescPop'
-import useRerunAction from '../../hooks/useRerunAction'
 
 const { useForm } = Form
 
