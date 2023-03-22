@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { connect } from 'dva'
 import styles from './list.less'
 import { Link, useHistory, useSelector } from 'umi'
 import { Form, Input, Table, Modal, Row, Col, Tooltip, Pagination, Space, Empty, Button, message, Popover } from 'antd'
@@ -40,10 +39,11 @@ import {
   ImportIcon,
   BarchartIcon,
 } from '@/components/common/Icons'
+import { ModuleType } from '@/pages/project/components/ListHoc'
 
 const { useForm } = Form
 
-function Model({ pid, project = {}, iterations, groups, versions, query, ...func }) {
+const Model: ModuleType = ({ pid, project = {}, iterations, groups, versions, query }) => {
   const history = useHistory()
   const { name } = history.location.query
   const [models, setModels] = useState([])
@@ -613,40 +613,40 @@ function Model({ pid, project = {}, iterations, groups, versions, query, ...func
   )
 }
 
-const props = (state) => {
-  return {
-    logined: state.user.logined,
-    query: state.model.query,
-    versions: state.model.versions,
-  }
-}
+// const props = (state) => {
+//   return {
+//     logined: state.user.logined,
+//     query: state.model.query,
+//     versions: state.model.versions,
+//   }
+// }
 
-const actions = (dispatch) => {
-  return {
-    getModels: (pid, query) => {
-      return dispatch({
-        type: 'model/getModelGroups',
-        payload: { pid, query },
-      })
-    },
-    getVersions: (gid, force) => {
-      return dispatch({
-        type: 'model/getModelVersions',
-        payload: { gid, force },
-      })
-    },
-    updateQuery: (query) => {
-      return dispatch({
-        type: 'model/updateQuery',
-        payload: query,
-      })
-    },
-    resetQuery: () => {
-      return dispatch({
-        type: 'model/resetQuery',
-      })
-    },
-  }
-}
+// const actions = (dispatch) => {
+//   return {
+//     getModels: (pid, query) => {
+//       return dispatch({
+//         type: 'model/getModelGroups',
+//         payload: { pid, query },
+//       })
+//     },
+//     getVersions: (gid, force) => {
+//       return dispatch({
+//         type: 'model/getModelVersions',
+//         payload: { gid, force },
+//       })
+//     },
+//     updateQuery: (query) => {
+//       return dispatch({
+//         type: 'model/updateQuery',
+//         payload: query,
+//       })
+//     },
+//     resetQuery: () => {
+//       return dispatch({
+//         type: 'model/resetQuery',
+//       })
+//     },
+//   }
+// }
 
-export default connect(props, actions)(Model)
+export default Model

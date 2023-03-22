@@ -41,6 +41,7 @@ import { DescPop } from '../common/DescPop'
 import useRerunAction from '@/hooks/useRerunAction'
 import useRequest from '@/hooks/useRequest'
 import StrongTitle from '../table/columns/StrongTitle'
+import { ModuleType } from '@/pages/project/components/ListHoc'
 
 type IsType = {
   isTrainSet?: boolean
@@ -57,16 +58,9 @@ type Dataset = YModels.Dataset & ExtraLabel & IsType
 type DatasetGroup = YModels.DatasetGroup & ExtraLabel & IsType
 type VersionsType = YStates.IdMap<Dataset[]>
 
-type Props = {
-  pid: number
-  project?: YModels.Project
-  groups?: number[]
-  iterations?: YModels.Iteration[]
-}
-
 const { useForm } = Form
 
-const Datasets: FC<Props> = ({ pid, project, iterations, groups }) => {
+const Datasets: ModuleType = ({ pid, project, iterations, groups }) => {
   const location: Location<{ type: string}> = useLocation()
   const { name } = location.query as { name?: string }
   const history = useHistory()

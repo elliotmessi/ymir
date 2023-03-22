@@ -11,7 +11,7 @@ import s from '../detail.less'
 type ListType = (m: ModuleType) => FC
 export type ModuleType = FC<{
   pid: number
-  project: YModels.Project
+  project?: YModels.Project
   iterations?: YModels.Iteration[]
   groups?: number[]
 }>

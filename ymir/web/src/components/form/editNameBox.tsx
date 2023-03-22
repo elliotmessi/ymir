@@ -1,18 +1,19 @@
 import { Form, Input } from 'antd'
 import t from '@/utils/t'
 
-import EditBox from './editBox'
+import EditBox, { RefProps } from './editBox'
 import useFetch from '@/hooks/useFetch'
-import { useEffect } from 'react'
+import { Ref, useEffect } from 'react'
 
 interface Props {
   record: YModels.Group
+  ref: Ref<RefProps>
   type?: string
   max?: number
   handle?: Function
 }
 
-const EditNameBox: React.FC<Props> = ({ type = 'dataset', record, max = 50, handle, children }) => {
+const EditNameBox: React.FC<Props> = ({ type = 'dataset', record, ref, max = 50, handle, children }) => {
   const func = type === 'dataset' ? 'updateDataset' : 'updateModelGroup'
   const [updated, updateResult] = useFetch(`${type}/${func}`)
   const { name } = record
@@ -28,7 +29,7 @@ const EditNameBox: React.FC<Props> = ({ type = 'dataset', record, max = 50, hand
   }
 
   return (
-    <EditBox record={record} update={update}>
+    <EditBox ref={ref} record={record} update={update}>
       <Form.Item
         label={t('common.editbox.name')}
         name="name"
