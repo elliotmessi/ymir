@@ -1,5 +1,5 @@
 import { getSocket } from '../services/socket'
-import { validState } from '@/constants/common'
+import { readyState } from '@/constants/common'
 
 const pageMaps = [
   { path: '/home/project/\\d+/dataset', method: 'dataset/updateDatasets' },
@@ -40,7 +40,7 @@ export default {
       const tasks = Object.keys(payload).map((hash) => ({
         ...payload[hash],
         hash,
-        reload: validState(payload[hash].result_state),
+        reload: !readyState(payload[hash].result_state),
       }))
       yield put({ type: 'saveTasks', payload: tasks })
     },
