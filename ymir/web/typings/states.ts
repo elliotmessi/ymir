@@ -102,12 +102,16 @@ declare namespace YStates {
       resolve: EffectAction
     }
     select: EffectSelector
+    dispatch: EffectAction
   }
-  type ActionType<P extends any = any> = {
-    type?: string
+  type PayloadType<P extends any = any> = {
     payload: P
   }
-  type EffectType<P extends any = any, R extends any = any> = (action: ActionType<P>, dispatch: EffectActionsType) => R
+  type ActionType<P extends any = any> = {
+    type: string
+    payload?: P
+  }
+  type EffectType<P extends any = any, R extends any = any> = (action: PayloadType<P>, dispatch: EffectActionsType) => R
   type ReducerType<S> = (state: S, action: ActionType) => S
   type EffectsType = {
     [key: string]: EffectType
@@ -115,21 +119,37 @@ declare namespace YStates {
   type ReducersType<S> = {
     [key: string]: ReducerType<S>
   }
-
-  type StoreType<name extends string, S extends { [key: string]: any}> = {
-    namespace: name,
-    state: S
-    effects: EffectsType
-    reducers: ReducersType<S>
+  interface Dispatch<A extends ActionType> {
+    <T extends A, R = any>(action: T): Promise<R>
   }
 
+  interface History {
+    length: number
+    listen(listener: (location: Location, action: 'PUSH' | 'POP' | 'REPLACE') => void): () => void
+  }
+  type Subscription = (
+    actions: {
+      history: History
+      dispatch: Dispatch<any>
+    },
+    done: Function,
+  ) => void | Function
+  type StoreType<name extends string, S extends { [key: string]: any }> = {
+    namespace: name
+    state: S
+    reducers: ReducersType<S>
+    effects?: EffectsType
+    subscriptions?: {
+      [key: string]: Subscription
+    }
+  }
 
   type PredictionReducers = ReducersType<PredictionState>
   type PredictionStore = StoreType<'prediction', PredictionState>
   type AssetStore = StoreType<'asset', AssetState>
+  type SocketStore = StoreType<'socket', SocketState>
 
   type ResultState<T extends YModels.ResultType> = T extends 'dataset' ? DatasetState : ModelState
   type List<T> = { items: T[]; total: number }
   type IdMap<T> = { [key: string | number]: T }
-  
 }
