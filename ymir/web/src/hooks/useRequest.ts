@@ -1,38 +1,12 @@
 import { useDispatch } from 'umi'
 import { useRequest as useAhRequest } from 'ahooks'
 import { useEffect } from 'react'
-type OptionsType<TData, TParams extends any[]> = {
+
+type Options<D, P extends any[]> = Parameters<typeof useAhRequest<D, P>>[1] & {
   loading?: boolean
-  manual?: boolean
-  onBefore?: (params: TParams) => void
-  onSuccess?: (data: TData, params: TParams) => void
-  onError?: (e: Error, params: TParams) => void
-  onFinally?: (params: TParams, data?: TData, e?: Error) => void
-  defaultParams?: TParams
-  refreshDeps?: (string | number)[]
-  refreshDepsAction?: () => void
-  loadingDelay?: number
-  pollingInterval?: number
-  pollingWhenHidden?: boolean
-  pollingErrorRetryCount?: number
-  refreshOnWindowFocus?: boolean
-  focusTimespan?: number
-  debounceWait?: number
-  debounceLeading?: boolean
-  debounceTrailing?: boolean
-  debounceMaxWait?: number
-  throttleWait?: number
-  throttleLeading?: boolean
-  throttleTrailing?: boolean
-  cacheKey?: string
-  cacheTime?: number
-  staleTime?: number
-  retryCount?: number
-  retryInterval?: number
-  ready?: boolean
 }
 
-const useRequest = <TData, TParams extends any[] = [params?: { [key: string]: any }]>(effect: string, options: OptionsType<TData, TParams> = {}) => {
+const useRequest = <TData, TParams extends any[] = [params?: { [key: string]: any }]>(effect: string, options: Options<TData, TParams> = {}) => {
   const dispatch = useDispatch()
   const { loading = true } = options
   const setLoading = (loading: Boolean) =>
@@ -51,7 +25,6 @@ const useRequest = <TData, TParams extends any[] = [params?: { [key: string]: an
   const defaultOpts = {
     manual: true,
   }
-  // { loading, data, error, params, cancel, refresh, refreshAsync, run, runAsync, mutate }
   const request = useAhRequest<TData, TParams>(fetch, { ...defaultOpts, ...options })
 
   useEffect(() => {
