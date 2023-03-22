@@ -94,7 +94,7 @@ declare namespace YStates {
   interface SocketState extends State {
     tasks: YModels.ProgressTask[]
   }
-  type EffectSelector = <R>(func: (state: YStates.Root) => R) => Promise<R>
+  type EffectSelector = <T extends (state: YStates.Root) => any>(func: T) => Promise<ReturnType<T>>
   type EffectAction = <P = unknown, R = unknown>(action: ActionType<P>) => Promise<R>
   type EffectActionsType = {
     call: <R>(func: Function, ...params: any[]) => Promise<R>
