@@ -1,12 +1,11 @@
 import { Col, Row, Select, SelectProps } from 'antd'
 import { FC, useEffect, useState } from 'react'
 import { DefaultOptionType } from 'antd/lib/select'
-import { useSelector } from 'umi'
 
 import t from '@/utils/t'
 import useRequest from '@/hooks/useRequest'
-import { List } from '@/models/typings/common'
-import { ClassObject } from '@/constants'
+import { useDebounce } from 'ahooks'
+import { KeywordObjectType, KeywordsQueryParams } from '@/services/keyword.d'
 
 type OptionType = DefaultOptionType & {
   value: string
@@ -16,20 +15,36 @@ type Props = SelectProps
 
 const UserKeywordsSelector: FC<Props> = (props) => {
   const [options, setOptions] = useState<OptionType[]>([])
-  const keywords = useSelector(({ keyword }) => keyword.allKeywords)
-  const { run: getAllKeywords, loading } = useRequest<List<ClassObject>>('keyword/getAllKeywords', {
+  const [queryName, setQueryName] = useState('')
+  const debonceQueryName = useDebounce(queryName, {
+    wait: 800,
+  })
+  const {
+    data: keywordResult,
+    run: getKeywords,
+    loading,
+  } = useRequest<YStates.List<KeywordObjectType>, [KeywordsQueryParams]>('keyword/getKeywords', {
     loading: false,
   })
 
   useEffect(() => {
-    getAllKeywords()
+    fetchKeywords()
   }, [])
 
   useEffect(() => {
-    keywords && generateOptions(keywords)
-  }, [keywords])
+    if (!debonceQueryName) {
+      return
+    }
+    fetchKeywords(debonceQueryName)
+  }, [debonceQueryName])
 
-  function generateOptions(keywords: ClassObject[] = []) {
+  useEffect(() => {
+    if (keywordResult) {
+      generateOptions(keywordResult.items)
+    }
+  }, [keywordResult])
+
+  function generateOptions(keywords: KeywordObjectType[] = []) {
     const opts = keywords.map((keyword) => ({
       label: (
         <Row>
@@ -42,13 +57,16 @@ const UserKeywordsSelector: FC<Props> = (props) => {
     setOptions(opts)
   }
 
+  const fetchKeywords = (name?: string) => getKeywords({ q: name, limit: 10 })
+
   return (
     <Select
       showArrow
       placeholder={t('task.train.form.keywords.label')}
       {...props}
       mode="tags"
-      filterOption={(value, option) => !!option && [option.value, ...(option.aliases || [])].some((key) => key.indexOf(value) >= 0)}
+      onSearch={setQueryName}
+      filterOption={false}
       options={options}
       loading={loading}
     ></Select>
