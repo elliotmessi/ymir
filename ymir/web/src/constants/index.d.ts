@@ -1,86 +1,47 @@
 import { ResultStates } from './common'
-import { Asset, AnnotationBase, Annotation, SegAnnotation, DetAnnotation, BoundingBox, Polygon, Mask } from './typings/asset.d'
-import { Classes, ClassObject, ClassesCount, CustomClass } from './typings/class.d'
-import { Backend, Matable, Result, Group } from './typings/common.d'
-import {
-  DatasetGroup,
-  Dataset,
-  Suggestion,
-  DatasetSuggestions,
-  AnnotationsCount,
-  DatasetAnalysis,
-  KeywordCountsType,
-  AnalysisChartData,
-  AnalysisChart,
-  CKItem,
-} from './typings/dataset.d'
-import { Image, ImageConfig, DockerImageConfig } from './typings/image.d'
-import { Message, MessageResultModules } from './typings/message.d'
-import { Model, ModelGroup, Stage, StageMetrics } from './typings/model.d'
-import { Prediction } from './typings/prediction.d'
-import { Project } from './typings/project.d'
-import { SysInfo } from './typings/sysinfo.d'
-import { Task, ProgressTask } from './typings/task.d'
-import { Iteration, Step } from './typings/iteration.d'
-import { Queue, QueueItem } from './typings/queue.d'
-import { User } from './typings/user.d'
+import { STATES } from './image'
+import { TASKSTATES, TASKTYPES } from './task'
+import { TaskResultType } from './TaskResultType'
 
-type UserLogRecord = {
+type Matable<U> = {
+  [Type in keyof U]: {
+    type: Type
+  } & U[Type]
+}[keyof U]
+type Message = Matable<M>
+
+type M = {
+  [TaskResultType.dataset]: MessageBase<YModels.Dataset>,
+  [TaskResultType.model]: MessageBase<YModels.Model>,
+  [TaskResultType.prediction]: MessageBase<YModels.Prediction>,
+  [TaskResultType.image]: MessageBase<YModels.Image>,
+}
+
+type MessageBase<T> = {
   id: number
-  action: number
-  state: number
-  content: string
-  actionLabel: string
-  // relatedEntity: {}
-  time: string
-  task?: Task
+  pid: number
+  resultId: number
+  resultState: T extends YModels.Image ? STATES : ResultStates
+  taskId: number
+  taskState: TASKSTATES
+  taskType: TASKTYPES
+  resultModule: MessageResultModules
+  result?: T
 }
 
-export {
-  Asset,
-  AnnotationBase,
-  Annotation,
-  SegAnnotation,
-  DetAnnotation,
-  BoundingBox,
-  Polygon,
-  Mask,
-  Message,
-  MessageResultModules,
-  Prediction,
-  Image,
-  ImageConfig,
-  DockerImageConfig,
-  Task,
-  SysInfo,
-  Backend,
-  Classes,
-  ClassObject,
-  ClassesCount,
-  CustomClass,
-  Matable,
-  Dataset,
-  DatasetGroup,
-  Suggestion,
-  AnnotationsCount,
-  DatasetSuggestions,
-  DatasetAnalysis,
-  KeywordCountsType,
-  AnalysisChartData,
-  AnalysisChart,
-  CKItem,
-  Result,
-  Group,
-  Model,
-  ModelGroup,
-  Stage,
-  StageMetrics,
-  Project,
-  ProgressTask,
-  Iteration,
-  Step,
-  UserLogRecord,
-  Queue,
-  QueueItem,
-  User,
+type MessageResultModules = 'dataset' | 'model' | 'prediction' | 'image'
+
+interface Prediction extends Omit<YModels.Dataset<YModels.InferenceParams>, 'metricLevels' | 'metrics'> {
+  inferModelId: number[]
+  inferModel?: YModels.Model
+  inferDatasetId: number
+  inferDataset?: YModels.Dataset
+  inferConfig: YModels.ImageConfig
+  rowSpan?: number
+  evaluated: boolean
+  pred: YModels.AnnotationsCount
+  inferClass?: Array<string>
+  odd?: boolean
 }
+
+export { Message, MessageResultModules, Prediction }
