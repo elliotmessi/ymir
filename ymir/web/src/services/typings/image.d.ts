@@ -20,4 +20,5 @@ type Image = {
 }
 type EditImage = Omit<Image, 'url'>
 
+
 export { QueryParams, Image, EditImage }

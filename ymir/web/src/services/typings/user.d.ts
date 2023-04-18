@@ -13,7 +13,7 @@ type SignupParams = AuthParams & {
 
 type LoginParams = AuthParams
 
-type UpdateUserParams = {
+type UpdateUserParams = { 
   password?: string
   phone?: string
   username?: string
@@ -27,12 +27,8 @@ type ResetPwdParams = {
 
 type UpdatePermissionParams = {
   id: number
-  state: STATES
-}
-
-type UpdateRoleParams = {
-  id: number
   role: ROLES
+  state: STATES
 }
 
 type QueryUsersParams = {
@@ -41,4 +37,4 @@ type QueryUsersParams = {
   state: STATES
 }
 
-export { SignupParams, LoginParams, UpdateUserParams, ResetPwdParams, UpdatePermissionParams, UpdateRoleParams, QueryUsersParams }
+export { SignupParams, LoginParams, UpdateUserParams, ResetPwdParams, UpdatePermissionParams, QueryUsersParams }
