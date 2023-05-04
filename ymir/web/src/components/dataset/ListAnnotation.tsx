@@ -63,9 +63,9 @@ const ListAnnotation: FC<Props> = ({ asset, filter, hideAsset, isFull }) => {
   return (
     <div className={styles.ic_container} ref={imgContainer} key={asset.hash}>
       <img ref={img} style={{ visibility: hideAsset ? 'hidden' : 'visible' }} src={asset?.url} className={styles.assetImg} onLoad={calClientWidth} />
-      <div className={styles.annotations} style={{ width: imgWidth, left: -imgWidth / 2 }}>
+      {/* <div className={styles.annotations} style={{ width: imgWidth, left: -imgWidth / 2 }}>
         {annotations.map(renderAnnotation)}
-      </div>
+      </div> */}
     </div>
   )
 }
