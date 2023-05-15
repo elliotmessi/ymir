@@ -1,4 +1,4 @@
-import { useEffect, useCallback, useState } from 'react'
+import { useEffect, useCallback, useState, FC } from 'react'
 import { Button, Card, Form, Input, message, Modal, Select, Space, Radio, Row, Col } from 'antd'
 import { connect } from 'dva'
 import { useParams, useHistory, useLocation } from 'umi'
@@ -11,11 +11,13 @@ import DatasetSelect from '@/components/form/datasetSelect'
 import Panel from '@/components/form/panel'
 import useFetch from '@/hooks/useFetch'
 import ProjectTypes from '@/components/project/ProjectTypes'
+import UserKeywordsSelector from '@/components/form/UserKeywordsSelector'
+type Props = {}
 
 const { useForm } = Form
 const { confirm } = Modal
 
-const Add = ({ keywords, datasets, getKeywords, ...func }) => {
+const Add: FC<Props> = ({ keywords, datasets, getKeywords, ...func }) => {
   const { id } = useParams()
   const history = useHistory()
   const location = useLocation()
@@ -151,22 +153,7 @@ const Add = ({ keywords, datasets, getKeywords, ...func }) => {
                 rules={[{ required: true, message: t('project.add.form.keyword.required') }, { validator: validateKeywords }]}
                 tooltip={t('project.add.form.keyword.tip')}
               >
-                <Select
-                  mode="tags"
-                  showArrow
-                  tokenSeparators={[',']}
-                  placeholder={t('project.add.form.keyword.placeholder')}
-                  disabled={isEdit && project?.currentIteration?.id}
-                  filterOption={(value, option) => [option.value, ...(option.aliases || [])].some((key) => key.indexOf(value) >= 0)}
-                >
-                  {keywords.map((keyword) => (
-                    <Select.Option key={keyword.name} value={keyword.name} aliases={keyword.aliases}>
-                      <Row>
-                        <Col flex={1}>{keyword.name}</Col>
-                      </Row>
-                    </Select.Option>
-                  ))}
-                </Select>
+                <UserKeywordsSelector placeholder={t('project.add.form.keyword.placeholder')} disabled={isEdit && project?.currentIteration?.id} mode="tags" />
               </Form.Item>
               <Form.Item
                 label={t('project.add.form.enableIteration')}
