@@ -2,7 +2,7 @@ enum ObjectType {
   ObjectDetection = 2,
   SemanticSegmentation = 3,
   InstanceSegmentation = 4,
-  MultiModal = 5,
+  MultiModal = 52,
 }
 
 const typesPrefix = 'project.types.'
@@ -26,6 +26,8 @@ const isSemantic = (type?: ObjectType) => type === ObjectType.SemanticSegmentati
 
 const isInstance = (type?: ObjectType) => type === ObjectType.InstanceSegmentation
 
+const isSegmentation = (type: ObjectType) => [ObjectType.InstanceSegmentation, ObjectType.SemanticSegmentation].includes(type)
+
 const isMultiModal = (type?: ObjectType) => type === ObjectType.MultiModal
 
-export { ObjectType, getProjectTypes, getProjectTypeLabel, isDetection, isSemantic, isInstance, isMultiModal }
+export { ObjectType, getProjectTypes, getProjectTypeLabel, isDetection, isSemantic, isInstance, isMultiModal, isSegmentation }
