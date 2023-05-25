@@ -2,7 +2,18 @@ import request from '@/utils/request'
 import { TASKTYPES } from '@/constants/task'
 import { randomNumber } from '@/utils/number'
 import { generateName } from '@/utils/string'
-import { FilterParams, FusionParams, InferenceParams, LabelParams, MergeParams, MiningParams, TaskParams, TasksQuery, TrainingParams } from './task.d'
+import {
+  ExcludeParams,
+  FilterParams,
+  FusionParams,
+  InferenceParams,
+  LabelParams,
+  MergeParams,
+  MiningParams,
+  TaskParams,
+  TasksQuery,
+  TrainingParams,
+} from './task.d'
 
 /**
  * get (or filter) task list
@@ -119,7 +130,7 @@ export function fusion({
  * @export
  * @param {MergeParams} { projectId, group, name, datasets = [], strategy = 2, excludes = [], description }
  */
-export function merge({ projectId, group, name, datasets = [], strategy = 2, excludes = [], description }: MergeParams) {
+export function merge({ projectId, group, name, datasets = [], strategy = 2, description }: MergeParams) {
   return request.post('/tasks/', {
     name: generateName('merge'),
     type: TASKTYPES.MERGE,
@@ -128,10 +139,31 @@ export function merge({ projectId, group, name, datasets = [], strategy = 2, exc
       task_type: 'merge',
       project_id: projectId,
       include_datasets: datasets,
-      exclude_datasets: excludes,
       dataset_group_name: name,
       dataset_group_id: group,
       merge_strategy: strategy,
+      description,
+    },
+  })
+}
+
+/**
+ * exclude datasets from dataset
+ * @export
+ * @param {MergeParams} { projectId, group, name, datasets = [], strategy = 2, excludes = [], description }
+ */
+export function exclude({ projectId, dataset, group, name, excludes = [], description }: ExcludeParams) {
+  return request.post('/tasks/', {
+    name: generateName('exclude'),
+    type: TASKTYPES.EXCLUDE,
+    project_id: projectId,
+    parameters: {
+      task_type: 'exclude_data',
+      project_id: projectId,
+      exclude_datasets: excludes,
+      dataset_id: dataset,
+      data_group_name: name,
+      data_group_id: group,
       description,
     },
   })

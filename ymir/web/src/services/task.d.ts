@@ -10,7 +10,7 @@ type WithDocker = {
   config: DockerConfig
   image: number
 }
-type modelStage = [number, number| undefined | null]
+type modelStage = [number, number | undefined | null]
 
 type TasksQuery = {
   stages?: number[]
@@ -57,7 +57,14 @@ type MergeParams = {
   group?: number
   name?: string
   strategy?: number
-  excludes?: number[]
+  description?: string
+}
+type ExcludeParams = {
+  projectId: number
+  dataset: number
+  group?: number
+  name?: string
+  excludes: number[]
   description?: string
 }
 

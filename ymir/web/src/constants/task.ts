@@ -11,6 +11,7 @@ export enum TASKTYPES {
   MODELIMPORT = 13,
   MODELCOPY = 14,
   IMAGEIMPORT = 17,
+  EXCLUDE = 18,
   SYS = 105,
 }
 
@@ -27,7 +28,8 @@ export const isFinalState = (state: TASKSTATES) => {
 }
 
 export const getTaskTypeLabel = (type: TASKTYPES) => {
-  const maps = {
+  const prefix = 'task.type.'
+  const maps: { [key: number]: string } = {
     [TASKTYPES.TRAINING]: 'task.type.train',
     [TASKTYPES.MINING]: 'task.type.mining',
     [TASKTYPES.LABEL]: 'task.type.label',
@@ -40,7 +42,8 @@ export const getTaskTypeLabel = (type: TASKTYPES) => {
     [TASKTYPES.MODELIMPORT]: 'task.type.modelimport',
     [TASKTYPES.MODELCOPY]: 'task.type.modelcopy',
     [TASKTYPES.IMAGEIMPORT]: 'task.type.imageimport',
+    [TASKTYPES.EXCLUDE]: 'task.type.exclude',
     [TASKTYPES.SYS]: 'task.type.sys',
   }
-  return maps[type] ? maps[type] : String(type)
+  return maps[type] ? `${prefix}${maps[type]}` : String(type)
 }
