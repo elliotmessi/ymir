@@ -1,4 +1,4 @@
-import { getTasks, getTask, updateTask, stopTask, fusion, merge, filter, mine, train, label, infer } from '@/services/task'
+import { getTasks, getTask, updateTask, stopTask, fusion, merge, exclude, filter, mine, train, label, infer } from '@/services/task'
 import { TASKTYPES, TASKSTATES, isFinalState } from '@/constants/task'
 
 const initQuery = {
@@ -127,6 +127,18 @@ export default {
         return result
       }
     },
+    *exclude({ payload }, { call, put }) {
+      let { code, result } = yield call(exclude, payload)
+      if (code === 0) {
+        if (result?.result_dataset?.id) {
+          yield put({
+            type: 'dataset/getDataset',
+            payload: { id: result?.result_dataset?.id },
+          })
+        }
+        return result
+      }
+    },
     *filter({ payload }, { call, put }) {
       let { code, result } = yield call(filter, payload)
       if (code === 0) {
@@ -163,7 +175,7 @@ export default {
       const { keywords } = payload
       yield put.resolve({
         type: 'keyword/updateKeywords',
-        payload: {keywords: keywords.map((kw) => ({ name: kw, aliases: [] }))},
+        payload: { keywords: keywords.map((kw) => ({ name: kw, aliases: [] })) },
       })
       let { code, result } = yield call(label, payload)
       if (code === 0) {
