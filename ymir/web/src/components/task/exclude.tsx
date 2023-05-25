@@ -14,6 +14,8 @@ import SubmitButtons from './SubmitButtons'
 import Dataset from '@/components/form/option/Dataset'
 
 import { Dataset as DatasetType, Task } from '@/constants'
+import useRequest from '@/hooks/useRequest'
+import { ExcludeParams } from '@/services/task.d'
 
 type Props = {
   did: number
@@ -25,7 +27,6 @@ const { useWatch, useForm } = Form
 
 const Merge: FC<Props> = ({ did, eid, ok = () => {} }) => {
   const [dataset, getDataset, setDataset] = useFetch('dataset/getDataset', {})
-  const [mergeResult, merge] = useFetch('task/merge')
   const pageParams = useParams<{ id: string }>()
   const pid = Number(pageParams.id)
   const [form] = useForm()
@@ -33,6 +34,7 @@ const Merge: FC<Props> = ({ did, eid, ok = () => {} }) => {
   const excludes: number[] = useWatch('excludes', form)
   const type = useWatch('type', form)
   const selectedDataset = useWatch('dataset', form)
+  const { data: excludeResult, run: exclude } = useRequest<Task, [ExcludeParams]>('task/exclude')
 
   const initialValues = {
     excludes: eid,
@@ -45,23 +47,22 @@ const Merge: FC<Props> = ({ did, eid, ok = () => {} }) => {
   useEffect(() => dataset.id && setGroup(dataset.groupId), [dataset])
 
   useEffect(() => {
-    if (mergeResult) {
-      ok(mergeResult)
+    if (excludeResult) {
+      ok(excludeResult)
       message.info(t('task.fusion.create.success.msg'))
     }
-  }, [mergeResult])
+  }, [excludeResult])
 
   const onFinish = (values: any) => {
-    const originDataset = did ? did : values.dataset
-    let datasets = [originDataset, ...(values.includes || [])].filter((True) => True)
+    const dataset = did ? did : values.dataset
 
     const params = {
       ...values,
       group: type ? group : undefined,
       projectId: pid,
-      datasets,
+      dataset,
     }
-    merge(params)
+    exclude(params)
   }
 
   function filter(datasets: DatasetType[], ids: number[] = []) {
