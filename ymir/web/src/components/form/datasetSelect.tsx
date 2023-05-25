@@ -11,7 +11,7 @@ import EmptyState from '@/components/empty/Dataset'
 import Dataset from '@/components/form/option/Dataset'
 import { Dataset as DatasetType } from '@/constants'
 
-interface Props extends SelectProps {
+interface Props extends SelectProps<any, OptionType> {
   pid: number
   filter?: number[]
   allowEmpty?: boolean
@@ -23,6 +23,9 @@ interface Props extends SelectProps {
 }
 interface DatasetOption extends DatasetType {
   disabled?: boolean
+}
+type OptionType = DefaultOptionType & {
+  dataset?: DatasetType
 }
 const defaultLabelRender = (dataset: DatasetType) => <Dataset dataset={dataset} />
 
@@ -40,7 +43,7 @@ const DatasetSelect: FC<Props> = ({
   ...resProps
 }) => {
   const datasets = useSelector(({ dataset }) => dataset.allDatasets[pid])
-  const [options, setOptions] = useState<DefaultOptionType[]>([])
+  const [options, setOptions] = useState<OptionType[]>([])
   const { run: getDatasets } = useRequest('dataset/queryAllDatasets', {
     debounceWait: 300,
     loading: false,
